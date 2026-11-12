@@ -97,3 +97,25 @@ h2 .brand-name { text-transform:none; }
 .hero-scenes { background: url("assets/fitmenow-hero-set-2-poster.jpg") center / cover no-repeat; }
 .hero-film { opacity: 0; }
 .hero-film.has-frame { opacity: 1; }
+
+/* Sourced adoption statistic; title spans the text and card columns. */
+.fit-market-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:start; margin-top:36px; }
+#market .fit-market-layout .page-intro { margin-top:0; grid-template-columns:1fr; gap:24px; }
+.fit-market-card { padding:38px 40px; border-radius:20px; color:var(--navy); background:radial-gradient(ellipse at 0% 0%,#bf73db 0%,transparent 60%),linear-gradient(165deg,#e397ff 0%,#f0c6ff 55%,#fcf2ff 100%); }
+.fit-market-card p { margin:0; }
+.fit-market-label { font-size:var(--type-label); }
+.fit-market-number { display:block; margin:20px 0; font-size:clamp(64px,7vw,104px); font-weight:600; line-height:1.15; color:white; }
+
+.fit-market-description { font-size:var(--type-body); }
+.fit-market-card .fit-market-source { margin-top:24px; font-size:var(--type-label); line-height:1.6; }
+.fit-market-source a { text-decoration:underline; text-underline-offset:3px; }
+@media(max-width:900px) { .fit-market-layout { grid-template-columns:1fr; gap:32px; } }
+@media(max-width:700px) { .fit-market-card { padding:28px 24px; } .fit-market-number { font-size:64px; } }
+
+/* Match the early-feedback card typography. */
+.fit-market-label { text-transform:uppercase; line-height:1.6; }
+.fit-market-number { margin:22px 0 12px; font-size:clamp(80px,8.5vw,120px); line-height:1.25; letter-spacing:-.075em; }
+.fit-market-number span { font-size:.55em; }
+.fit-market-description { font-size:var(--type-subheading); font-weight:500; line-height:1.4; letter-spacing:-.025em; }
+.fit-market-card .fit-market-source { margin-top:30px; padding-top:20px; border-top:1px solid #0d2d4d40; }
+@media(max-width:700px) { .fit-market-number { font-size:95px; } }

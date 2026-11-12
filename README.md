@@ -9,7 +9,7 @@ Static technology-licensing page. `index.html` is the approved copy source; `sty
 - `npm run check`: check source and generated JavaScript syntax.
 - Preview the bundle at http://127.0.0.1:4176/webflow/preview.html.
 
-Sasha: follow [Webflow setup](documentation/webflow-setup.txt) and [Microsoft Bookings / Outlook](documentation/microsoft-bookings.md). The scheduler uses the same company link as water-retention.
+Sasha: follow [Webflow setup](documentation/webflow-setup.txt) and [Microsoft Bookings / Outlook](documentation/microsoft-bookings.md). The scheduler uses the company introduction-meeting link.
 
 Before publication, verify the final hosted assets, booking availability, mobile layout and keyboard navigation. Remove the standalone `noindex,nofollow` only when indexing is approved; set Webflow metadata separately. No deployment or appointments are created by these files.
 
