@@ -1,0 +1,74 @@
+// Booking uses native Microsoft Bookings links in index.html.
+// Measure the complete menu, including loaded fonts, rather than guessing a breakpoint.
+const header = document.querySelector('.header');
+const navRow = header.querySelector('.nav');
+const menu = header.querySelector('nav');
+const menuToggle = header.querySelector('.menu-toggle');
+function closeMenu(restoreFocus = false) {
+  header.classList.remove('is-menu-open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  menuToggle.setAttribute('aria-label', 'Open menu');
+  if (restoreFocus) menuToggle.focus();
+}
+function fitNavigation() {
+  menu.classList.add('is-measuring');
+  const menuWidth = menu.getBoundingClientRect().width;
+  menu.classList.remove('is-measuring');
+  const rowStyle = getComputedStyle(navRow);
+  const available = navRow.clientWidth - parseFloat(rowStyle.paddingLeft) - parseFloat(rowStyle.paddingRight);
+  const needed = menuWidth + navRow.querySelector(':scope > a').getBoundingClientRect().width + navRow.querySelector(':scope > .button').getBoundingClientRect().width + parseFloat(rowStyle.columnGap) * 2;
+  const collapsed = needed > available;
+  header.classList.toggle('is-collapsed', collapsed);
+  if (!collapsed) closeMenu();
+}
+menuToggle.addEventListener('click', () => {
+  const open = header.classList.toggle('is-menu-open');
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+});
+menu.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && header.classList.contains('is-menu-open')) closeMenu(true); });
+document.addEventListener('click', event => { if (!header.contains(event.target)) closeMenu(); });
+window.addEventListener('resize', fitNavigation);
+document.fonts.ready.then(fitNavigation);
+fitNavigation();
+
+// Dismiss the source tip with Escape or a click outside it.
+document.addEventListener('click', (event) => {
+  document.querySelectorAll('.market-info[open]').forEach((tip) => {
+    if (!tip.contains(event.target)) tip.removeAttribute('open');
+  });
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  document.querySelectorAll('.market-info[open]').forEach((tip) => {
+    tip.removeAttribute('open');
+    tip.querySelector('summary').focus();
+  });
+});
+
+// Hero film: honor reduced motion and pause when the hero is out of view.
+(() => {
+ const video = document.querySelector('.hero-film');
+ const control = document.querySelector('.hero-film-control');
+ if (!video || !control) return;
+ const preference = matchMedia('(prefers-reduced-motion: reduce)');
+ let enabled = !preference.matches && !navigator.connection?.saveData;
+ let visible = true;
+ const sync = () => {
+  if (enabled && visible && !document.hidden) video.play().catch(() => { enabled = false; update(); });
+  else video.pause();
+ };
+ const update = () => {
+  control.dataset.playing = String(!video.paused);
+  control.title = video.paused ? 'Play background video' : 'Pause background video';
+  control.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video');
+ };
+ video.addEventListener('play', update);
+ video.addEventListener('pause', update);
+ control.addEventListener('click', () => { enabled = !enabled; sync(); });
+ preference.addEventListener('change', () => { enabled = !preference.matches; sync(); });
+ document.addEventListener('visibilitychange', sync);
+ new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(video);
+ sync();
+})();
