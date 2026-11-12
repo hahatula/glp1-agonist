@@ -54,9 +54,13 @@ document.addEventListener('keydown', (event) => {
  if (!video || !control) return;
  const preference = matchMedia('(prefers-reduced-motion: reduce)');
  let enabled = !preference.matches && !navigator.connection?.saveData;
- let visible = true;
+ // Wait for the observer before playing: a restored scroll position may hide the hero.
+ let visible = false;
  const sync = () => {
-  if (enabled && visible && !document.hidden) video.play().catch(() => { enabled = false; update(); });
+  if (enabled && visible && !document.hidden) video.play().catch(() => {
+   // A pause during loading rejects play(). Keep the user preference so re-entry retries.
+   update();
+  });
   else video.pause();
  };
  const update = () => {
@@ -64,11 +68,13 @@ document.addEventListener('keydown', (event) => {
   control.title = video.paused ? 'Play background video' : 'Pause background video';
   control.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video');
  };
+ video.addEventListener('playing', () => { video.classList.add('has-frame'); update(); });
+ video.addEventListener('error', () => { video.classList.remove('has-frame'); update(); });
  video.addEventListener('play', update);
  video.addEventListener('pause', update);
- control.addEventListener('click', () => { enabled = !enabled; sync(); });
+ control.addEventListener('click', () => { enabled = video.paused; sync(); });
  preference.addEventListener('change', () => { enabled = !preference.matches; sync(); });
  document.addEventListener('visibilitychange', sync);
  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(video);
- sync();
+ update();
 })();

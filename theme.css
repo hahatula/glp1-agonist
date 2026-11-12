@@ -17,7 +17,7 @@ main > section.closing {
 .comparison-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
 .comparison-row>* { padding:26px; margin:0; min-width:0; }
 .comparison-row p, .comparison-row h3 { font-size:var(--type-body); line-height:1.65; }
-.comparison-row>:last-child { background:linear-gradient(115deg,#e397ff 0%,#f8e9ff 58%,#edbdff 100%); color:var(--navy-deep); }
+.comparison-row>:last-child { background:linear-gradient(115deg, #f8e9ff 0%, #e397ff 100%); color:var(--navy-deep); }
 .comparison-row:not(.comparison-head)>:first-child { color:#c6d0da; }
 .comparison-row strong { font-weight:700; }
 .comparison-row+.comparison-row { border-top:1px solid #ffffff24; }
@@ -92,3 +92,8 @@ h2 .brand-name { text-transform:none; }
 @media (max-width:700px) {
 .hero .unified-facts .fact-applications { display:none; }
 }
+
+/* Keep the poster visible until playback has produced a frame. */
+.hero-scenes { background: url("assets/fitmenow-hero-set-2-poster.jpg") center / cover no-repeat; }
+.hero-film { opacity: 0; }
+.hero-film.has-frame { opacity: 1; }
